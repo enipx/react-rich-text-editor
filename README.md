@@ -2,8 +2,11 @@
 
 Rich text input with customization support using lexical ⚡
 
+**Please be aware that this component was hastily developed for a project, and as a result, certain aspects were handled in this way.**
+
 <br />
-<img src="https://res.cloudinary.com/dmsic9qmj/image/upload/v1709661385/ui/rich-text-editor_ui31xj.png">
+<img width="800" src="https://res.cloudinary.com/dmsic9qmj/image/upload/v1709661385/ui/rich-text-editor_ui31xj.png">
+<img width="800" src="https://res.cloudinary.com/dmsic9qmj/image/upload/v1709845526/misc/input_ny5mpa.png" >
 <br />
 
 ## Installation

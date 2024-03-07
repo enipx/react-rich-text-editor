@@ -1,7 +1,7 @@
 {
   "name": "@enipx/react-rich-text-editor",
   "version": "1.0.0",
-  "description": "concise and efficient solution for adding tags input.⚡",
+  "description": "Rich text input with customization support using lexical",
   "main": "dist/commonjs/index.js",
   "module": "dist/module/index.js",
   "types": "dist/typescript/index.d.ts",
