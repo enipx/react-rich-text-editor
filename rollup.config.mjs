@@ -44,6 +44,7 @@ export default [
       postcss({
         plugins: [],
         minimize: true,
+        // extract: true,
       }),
       resolve(),
       peerDepsExternal(),

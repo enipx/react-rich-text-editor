@@ -110,7 +110,7 @@ export const ActiveIcon = ({ active }: { active: boolean }) => {
 };
 
 const blockTypeToBlockName = {
-  code: 'Code Block',
+  // code: 'Code Block',
   h1: 'Large Heading',
   h2: 'Small Heading',
   h3: 'Heading',
@@ -751,13 +751,13 @@ export default function ToolbarPlugin({
             aria-label="Insert Code">
             <Code />
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={insertLink}
             className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
             aria-label="Insert Link">
             <Link />
-          </button>
+          </button> */}
           {isLink &&
             createPortal(
               <FloatingLinkEditor editor={editor} {...props} />,

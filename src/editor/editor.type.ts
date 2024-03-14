@@ -2,6 +2,7 @@ export type BlockOptionsType = 'code' | 'ol' | 'ul' | 'quote' | 'h1' | 'h2';
 
 export interface RichTextEditorProps {
   onChange?: (arg: string) => void;
+  onHTMLChange?: (arg: string) => void;
   value?: string;
   placeholder?: string;
   theme?: Record<string, any>;

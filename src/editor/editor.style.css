@@ -8,9 +8,10 @@
   --enipx-editor-border-color-hover: #aaa;
   --enipx-editor-min-height: 150px;
   --enipx-editor-padding: 1rem;
-  --enipx-editor-code-format-bg: rgb(240, 242, 245);
   --enipx-editor-link-format-color: rgb(33, 111, 219);
   --enipx-editor-tree-view-bg: #222;
+
+  --enipx-editor-code-format-bg: rgb(240, 242, 245);
   --enipx-editor-code-format-font-family: Menlo, Consolas, Monaco, monospace;
   --enipx-editor-code-format-before-bg: #eee;
   --enipx-editor-code-format-color: #777;
@@ -44,6 +45,10 @@
   --enipx-editor-link-popup-bg: #eee;
   --enipx-editor-link-popup-color: #000;
   --enipx-editor-link-popup-font-size: 0.85rem;
+
+  --enipx-editor-toolbar-text-font-size: 0.875rem;
+  --enipx-editor-toolbar-dropdown-font-size: 0.875rem;
+  --enipx-editor-toolbar-dropdown-padding: 0.5rem;
 }
 
 h1 {
@@ -240,7 +245,6 @@ h1 {
   margin: 0;
   margin-top: 0.625rem;
   padding: 0;
-  text-transform: uppercase;
 }
 
 .editor-quote {
@@ -404,7 +408,7 @@ pre::-webkit-scrollbar-thumb {
   display: flex;
   line-height: 1.25rem;
   vertical-align: middle;
-  font-size: 0.875rem;
+  font-size: var(--enipx-editor-toolbar-text-font-size);
   text-overflow: ellipsis;
   width: 4.5rem;
   overflow: hidden;
@@ -432,10 +436,10 @@ pre::-webkit-scrollbar-thumb {
 
 .dropdown .item {
   margin: 0 0.5rem 0 0.5rem;
-  padding: 0.5rem;
+  padding: var(--enipx-editor-toolbar-dropdown-padding);
   color: var(--enipx-editor-color);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: var(--enipx-editor-toolbar-dropdown-font-size);
   display: flex;
   align-content: center;
   flex-direction: row;

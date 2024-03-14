@@ -1,13 +1,13 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { $insertNodes } from 'lexical';
+import { $insertNodes, $getRoot } from 'lexical';
 import { useEffect, useState } from 'react';
 
 import { RichTextEditorProps } from '../editor';
 
 export const HTMLPlugin = (props: RichTextEditorProps) => {
-  const { onChange, value } = props;
+  const { onChange, onHTMLChange, value } = props;
 
   const [mounted, setMounted] = useState(false);
 
@@ -27,7 +27,15 @@ export const HTMLPlugin = (props: RichTextEditorProps) => {
 
   const onChangeHandler = (editorState: any) => {
     editorState.read(() => {
-      onChange?.($generateHtmlFromNodes(editor));
+      const html = $generateHtmlFromNodes(editor);
+
+      // Read the contents of the EditorState here.
+      const root = $getRoot();
+      const textContent = root?.getTextContent();
+
+      onHTMLChange?.(textContent ? html : '');
+
+      onChange?.(textContent);
     });
   };
 

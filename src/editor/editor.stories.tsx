@@ -13,7 +13,8 @@ type Story = StoryObj<RichTextEditorProps>;
 
 export const Default: Story = {
   args: {
-    // onChange: (arg) => console.log(arg),
+    onChange: (arg) => console.log(arg),
+    onHTMLChange: (arg) => console.log(arg),
     value: `<p class="editor-paragraph" dir="ltr"><span style="white-space: pre-wrap;">eeeeertyyyyyyy</span></p>`,
     cssVariables: {
       '--enipx-editor-font-size': '1rem',
