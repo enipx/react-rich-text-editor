@@ -29,5 +29,6 @@ export const Default: Story = {
       '--enipx-editor-link-popup-color': 'hsl(210,40%,98%)',
       '--enipx-editor-toolbar-divider-color': 'rgba(255, 255, 255, 0.08)',
     },
+    removeBlockOption: ['ul', 'ol', 'code'],
   },
 };

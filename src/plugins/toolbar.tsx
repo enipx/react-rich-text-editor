@@ -42,6 +42,7 @@ import { createPortal } from 'react-dom';
 
 import { RichTextEditorProps } from '..';
 
+import { BlockOptionsType } from '@/editor/editor.type';
 import {
   ArrowClockwise,
   ArrowCounterClockwise,
@@ -313,12 +314,12 @@ function getSelectedNode(selection: any) {
 }
 
 function BlockOptionsDropdownList({
-  editor,
-  blockType,
-  toolbarRef,
-  setShowBlockOptionsDropDown,
+  removeBlockOption,
   ...props
-}: RichTextEditorProps & any) {
+}: RichTextEditorProps) {
+  const { editor, blockType, toolbarRef, setShowBlockOptionsDropDown } =
+    props as any;
+
   const dropDownRef = useRef<any>(null);
 
   useEffect(() => {
@@ -391,9 +392,24 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
+  const formatHeading = (
+    headingType: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1'
+  ) => {
+    if (blockType !== headingType) {
+      editor.update(() => {
+        const selection = $getSelection();
+
+        if ($isRangeSelection(selection)) {
+          $wrapNodes(selection, () => $createHeadingNode(headingType));
+        }
+      });
+    }
+    setShowBlockOptionsDropDown(false);
+  };
+
   const formatBulletList = () => {
     if (blockType !== 'ul') {
-      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND);
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
     } else {
       editor.dispatchCommand(REMOVE_LIST_COMMAND);
     }
@@ -402,7 +418,7 @@ function BlockOptionsDropdownList({
 
   const formatNumberedList = () => {
     if (blockType !== 'ol') {
-      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND);
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
     } else {
       editor.dispatchCommand(REMOVE_LIST_COMMAND);
     }
@@ -435,6 +451,10 @@ function BlockOptionsDropdownList({
     setShowBlockOptionsDropDown(false);
   };
 
+  const isRemoveBlockOption = (option: BlockOptionsType) => {
+    return !removeBlockOption?.includes(option);
+  };
+
   return (
     <div className="dropdown" ref={dropDownRef} style={props?.cssVariables}>
       <button type="button" className="item" onClick={formatParagraph}>
@@ -452,26 +472,34 @@ function BlockOptionsDropdownList({
         <span className="text">Small Heading</span>
         <ActiveIcon active={blockType === 'h2'} />
       </button>
-      <button type="button" className="item" onClick={formatBulletList}>
-        <ListUL />
-        <span className="text">Bullet List</span>
-        <ActiveIcon active={blockType === 'ul'} />
-      </button>
-      <button type="button" className="item" onClick={formatNumberedList}>
-        <ListOL />
-        <span className="text">Numbered List</span>
-        <ActiveIcon active={blockType === 'ol'} />
-      </button>
-      <button type="button" className="item" onClick={formatQuote}>
-        <ChatSquareQuote />
-        <span className="text">Quote</span>
-        <ActiveIcon active={blockType === 'quote'} />
-      </button>
-      <button type="button" className="item" onClick={formatCode}>
-        <Code />
-        <span className="text">Code Block</span>
-        <ActiveIcon active={blockType === 'code'} />
-      </button>
+      {isRemoveBlockOption('ul') ? (
+        <button type="button" className="item" onClick={formatBulletList}>
+          <ListUL />
+          <span className="text">Bullet List</span>
+          <ActiveIcon active={blockType === 'ul'} />
+        </button>
+      ) : null}
+      {isRemoveBlockOption('ol') ? (
+        <button type="button" className="item" onClick={formatNumberedList}>
+          <ListOL />
+          <span className="text">Numbered List</span>
+          <ActiveIcon active={blockType === 'ol'} />
+        </button>
+      ) : null}
+      {isRemoveBlockOption('quote') ? (
+        <button type="button" className="item" onClick={formatQuote}>
+          <ChatSquareQuote />
+          <span className="text">Quote</span>
+          <ActiveIcon active={blockType === 'quote'} />
+        </button>
+      ) : null}
+      {isRemoveBlockOption('code') ? (
+        <button type="button" className="item" onClick={formatCode}>
+          <Code />
+          <span className="text">Code Block</span>
+          <ActiveIcon active={blockType === 'code'} />
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -651,10 +679,12 @@ export default function ToolbarPlugin({
           {showBlockOptionsDropDown &&
             createPortal(
               <BlockOptionsDropdownList
-                editor={editor}
-                blockType={blockType}
-                toolbarRef={toolbarRef}
-                setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
+                {...({
+                  editor,
+                  blockType,
+                  toolbarRef,
+                  setShowBlockOptionsDropDown,
+                } as any)}
                 {...props}
               />,
               document.body

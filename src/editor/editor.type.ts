@@ -1,3 +1,5 @@
+export type BlockOptionsType = 'code' | 'ol' | 'ul' | 'quote' | 'h1' | 'h2';
+
 export interface RichTextEditorProps {
   onChange?: (arg: string) => void;
   value?: string;
@@ -18,4 +20,7 @@ export interface RichTextEditorProps {
   inputStyle?: React.CSSProperties;
   placeholderStyle?: React.CSSProperties;
   cssVariables?: Record<string, any>;
+
+  // settings
+  removeBlockOption?: BlockOptionsType[];
 }
