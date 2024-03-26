@@ -43,6 +43,7 @@ import { createPortal } from 'react-dom';
 import { RichTextEditorProps } from '..';
 
 import { BlockOptionsType } from '@/editor/editor.type';
+import { ScreenSize, getWindowScreenSize } from '@/helpers/base';
 import {
   ArrowClockwise,
   ArrowCounterClockwise,
@@ -315,6 +316,9 @@ function getSelectedNode(selection: any) {
 
 function BlockOptionsDropdownList({
   removeBlockOption,
+  dropdownPositionOffset = 40,
+  mdDropdownPositionOffset = 40,
+  lgDropdownPositionOffset = 40,
   ...props
 }: RichTextEditorProps) {
   const { editor, blockType, toolbarRef, setShowBlockOptionsDropDown } =
@@ -326,11 +330,26 @@ function BlockOptionsDropdownList({
     const toolbar = toolbarRef.current;
     const dropDown = dropDownRef.current;
 
-    if (toolbar !== null && dropDown !== null) {
-      const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left}px`;
-    }
+    const updatePosition = () => {
+      if (toolbar !== null && dropDown !== null) {
+        const { top, left } = toolbar.getBoundingClientRect();
+
+        let offset = dropdownPositionOffset;
+
+        if (getWindowScreenSize() === ScreenSize.MD) {
+          offset = mdDropdownPositionOffset;
+        }
+
+        if (getWindowScreenSize() === ScreenSize.LG) {
+          offset = lgDropdownPositionOffset;
+        }
+
+        dropDown.style.top = `${top + offset}px`;
+        dropDown.style.left = `${left}px`;
+      }
+    };
+
+    updatePosition();
   }, [dropDownRef, toolbarRef]);
 
   useEffect(() => {

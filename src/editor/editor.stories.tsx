@@ -31,5 +31,8 @@ export const Default: Story = {
       '--enipx-editor-toolbar-divider-color': 'rgba(255, 255, 255, 0.08)',
     },
     removeBlockOption: ['ul', 'ol', 'code'],
+    lgDropdownPositionOffset: 200,
+    mdDropdownPositionOffset: 100,
+    dropdownPositionOffset: 50,
   },
 };
