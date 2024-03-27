@@ -43,7 +43,7 @@ import { createPortal } from 'react-dom';
 import { RichTextEditorProps } from '..';
 
 import { BlockOptionsType } from '@/editor/editor.type';
-import { ScreenSize, getWindowScreenSize } from '@/helpers/base';
+import { classNamesLists, updateDropdownPosition } from '@/helpers/base';
 import {
   ArrowClockwise,
   ArrowCounterClockwise,
@@ -316,9 +316,6 @@ function getSelectedNode(selection: any) {
 
 function BlockOptionsDropdownList({
   removeBlockOption,
-  dropdownPositionOffset = 40,
-  mdDropdownPositionOffset = 40,
-  lgDropdownPositionOffset = 40,
   ...props
 }: RichTextEditorProps) {
   const { editor, blockType, toolbarRef, setShowBlockOptionsDropDown } =
@@ -327,30 +324,8 @@ function BlockOptionsDropdownList({
   const dropDownRef = useRef<any>(null);
 
   useEffect(() => {
-    const toolbar = toolbarRef.current;
-    const dropDown = dropDownRef.current;
-
-    const updatePosition = () => {
-      if (toolbar !== null && dropDown !== null) {
-        const { top, left } = toolbar.getBoundingClientRect();
-
-        let offset = dropdownPositionOffset;
-
-        if (getWindowScreenSize() === ScreenSize.MD) {
-          offset = mdDropdownPositionOffset;
-        }
-
-        if (getWindowScreenSize() === ScreenSize.LG) {
-          offset = lgDropdownPositionOffset;
-        }
-
-        dropDown.style.top = `${top + offset}px`;
-        dropDown.style.left = `${left}px`;
-      }
-    };
-
-    updatePosition();
-  }, [dropDownRef, toolbarRef]);
+    updateDropdownPosition();
+  }, [dropDownRef, toolbarRef, setShowBlockOptionsDropDown]);
 
   useEffect(() => {
     const dropDown = dropDownRef.current;
@@ -475,7 +450,10 @@ function BlockOptionsDropdownList({
   };
 
   return (
-    <div className="dropdown" ref={dropDownRef} style={props?.cssVariables}>
+    <div
+      className={`dropdown ${classNamesLists.dropdown}`}
+      ref={dropDownRef}
+      style={props?.cssVariables}>
       <button type="button" className="item" onClick={formatParagraph}>
         <TextParagraph />
         <span className="text">Normal</span>
@@ -627,6 +605,10 @@ export default function ToolbarPlugin({
     );
   }, [editor, updateToolbar]);
 
+  useEffect(() => {
+    updateDropdownPosition();
+  }, [showBlockOptionsDropDown]);
+
   const codeLanguges = useMemo(() => getCodeLanguages(), []);
   const onCodeLanguageSelect = useCallback(
     (e: any) => {
@@ -652,7 +634,7 @@ export default function ToolbarPlugin({
 
   return (
     <div
-      className={`toolbar ${className || ''}`}
+      className={`toolbar ${classNamesLists.toolbar} ${className || ''}`}
       ref={toolbarRef}
       style={style}>
       <button
@@ -681,9 +663,9 @@ export default function ToolbarPlugin({
           <button
             type="button"
             className="toolbar-item block-controls"
-            onClick={() =>
-              setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
-            }
+            onClick={() => {
+              setShowBlockOptionsDropDown(!showBlockOptionsDropDown);
+            }}
             aria-label="Formatting Options">
             <BlockTypeIcons type={blockType} />
             <span className="text">

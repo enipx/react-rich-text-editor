@@ -1,17 +1,24 @@
-export enum ScreenSize {
-  LG = 'lg',
-  MD = 'md',
-  SM = 'sm',
-}
+export const classNamesLists = {
+  toolbar: 'enipx-rich-text-toolbar',
+  dropdown: 'enipx-rich-text-dropdown',
+};
 
-export const getWindowScreenSize = () => {
-  const screenWidth = window.innerWidth;
+export const updateDropdownPosition = () => {
+  const toolbar = document.querySelector(
+    `.${classNamesLists.toolbar}`
+  ) as HTMLElement | null;
+  const dropdown = document.querySelector(
+    `.${classNamesLists.dropdown}`
+  ) as HTMLElement | null;
 
-  if (screenWidth >= 992) {
-    return ScreenSize.LG;
-  } else if (screenWidth >= 768) {
-    return ScreenSize.MD;
-  } else {
-    return ScreenSize.SM;
+  if (!toolbar || !dropdown) {
+    return;
   }
+
+  const { left, top } = toolbar.getBoundingClientRect();
+
+  const topOffset = top + window.scrollY + toolbar.clientHeight;
+
+  dropdown.style.top = `${topOffset}px`;
+  dropdown.style.left = `${left}px`;
 };

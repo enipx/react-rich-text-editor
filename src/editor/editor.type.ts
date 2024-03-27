@@ -24,8 +24,4 @@ export interface RichTextEditorProps {
 
   // settings
   removeBlockOption?: BlockOptionsType[];
-  /** @temp this is temporarily used to fix NextJs offset issue */
-  dropdownPositionOffset?: number;
-  mdDropdownPositionOffset?: number;
-  lgDropdownPositionOffset?: number;
 }
